@@ -1,7 +1,7 @@
 {
   "name": "hunter",
   "version": "0.1.0",
-  "description": "Portable guided career workflows for profiles, opportunities, application assets, relationships, and pursuits.",
+  "description": "Provider-powered career workflows for profiles, opportunities, applications, relationships, and pursuits.",
   "author": {
     "name": "Hunter Career OS Contributors"
   },
@@ -16,8 +16,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Hunter",
-    "shortDescription": "Guided career discovery and pursuit workflows",
-    "longDescription": "Use available tools to build isolated profiles, discover and analyze opportunities, create targeted assets, and maintain portable pursuit state.",
+    "shortDescription": "Manage careers with the tools already available",
+    "longDescription": "Use the host's available intelligence, context, and tools to manage independent career profiles, discover and pursue work, create materials, develop relationships, and maintain portable continuity.",
     "developerName": "Hunter Career OS Contributors",
     "category": "Productivity",
     "capabilities": [
@@ -26,9 +26,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Set me up from my career files.",
-      "Find and evaluate opportunities for this profile.",
-      "What should I do next?"
+      "Set me up from my career files and manage the next steps.",
+      "Find and pursue the best opportunities for this profile.",
+      "Use the tools available here to move my career forward."
     ]
   }
 }

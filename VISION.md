@@ -9,138 +9,110 @@ negotiator.
 A career is fragmented across resumes, job portals, professional profiles,
 recruiters, staffing firms, contractor marketplaces, email, calendars,
 relationships, interviews, and private context. Hunter brings those pieces
-together as one user-directed career agent.
+together as one user-directed career operating skill.
 
 Hunter's purpose is simple:
 
-> Understand what the user wants, use every relevant available capability,
-> find and develop opportunities, create the required assets, manage the
-> process, and continuously recommend the best next step.
+> Understand what the user wants, use every relevant capability available in
+> the current host, find and develop opportunities, create what is needed,
+> manage the process, and continuously recommend the best next action.
 
-## The promise
+## The product boundary
 
-Hunter is a free, open-source, platform-neutral career agent.
+Hunter owns:
 
-It helps a user:
+- career workflows and judgment;
+- independent profile selection and isolation;
+- opportunity, relationship, pursuit, and next-action continuity; and
+- instructions for combining available capabilities into useful outcomes.
 
-- create and maintain multiple independent professional profiles;
-- discover permanent roles, contract work, consulting opportunities,
-  recruiters, staffing firms, referral paths, and valuable connections;
-- create and tailor resumes, cover letters, profiles, proposals, application
-  answers, and outreach;
-- organize applications, conversations, interviews, follow-ups, offers, and
-  negotiations;
-- use the browser, files, connected sources, document tools, and other
-  capabilities already available on the chosen platform; and
-- carry its working state between chats and compatible agentic platforms.
+The host owns:
 
-Hunter is not tied to one profession, country, seniority level, employment
-model, portal, or AI provider. A user should be able to obtain a useful result
-in the first session.
+- the language model and its intelligence;
+- browser, search, files, documents, email, calendar, apps, forms, and other
+  tools;
+- connected context and storage; and
+- authentication, authorization, confirmations, and execution.
 
-## Profiles belong to the user
+Hunter is not a second agent runtime, tool simulator, integration platform, or
+hosted service. It does not recreate capabilities already supplied by the
+provider. A powerful host enables end-to-end execution; a limited host still
+gets Hunter's reasoning, preparation, continuity, and handoffs.
 
-Hunter supports an isolated portfolio of profiles. Each profile can have its
-own data, narrative, targets, preferences, resumes, search strategy,
-relationships, and pursuits.
+## One system, many independent profiles
 
-Each profile stands alone. Profiles do not have to share a common data core. A
-user can create a profile from existing material, build one conversationally,
-generate one from scratch, clone an existing profile, or maintain several
-completely different profiles.
+Hunter supports any number of profiles. Each can represent a role direction,
+profession, market, engagement model, or experiment with its own facts,
+narrative, targets, materials, relationships, and pursuits.
 
-Profile data remains isolated by default. Reuse between profiles happens only
-when the user requests it.
+Profiles do not require a shared factual core. A user may create one from
+existing context, build one conversationally, create one from scratch, clone a
+starting point, or maintain several completely different profiles. Information
+moves between profiles only when the user requests it.
 
 ## The whole opportunity market
 
-The best opportunity may not be posted on a major job board. Hunter treats the
-market as a connected acquisition network:
+Hunter treats the market as a connected acquisition network:
 
-- direct employer and applicant-tracking-system listings;
-- general, specialist, and regional job portals;
-- contract, freelance, and consulting marketplaces;
-- staffing and recruitment agencies;
-- specialist and executive recruiters;
-- professional networks, communities, and events;
-- warm introductions, referrals, and direct relationships;
-- inbound messages and emerging leads.
+- direct employers and applicant-tracking systems;
+- general, specialist, regional, and remote-work portals;
+- contract, freelance, consulting, and expert marketplaces;
+- staffing, recruitment, talent, and executive-search firms;
+- professional networks, communities, events, and warm introductions;
+- direct relationships, referrals, inbound messages, and emerging leads; and
+- any useful public, private, or connected source available in the host.
 
-Hunter connects opportunity discovery with relationship development,
-application assets, pipeline state, interview preparation, follow-ups, and
+Discovery is joined to positioning, materials, relationship development,
+applications, communication, interviews, follow-ups, offers, negotiation, and
 outcome learning.
 
-## Use the strongest available capabilities
+## Provider-powered from day one
 
-Hunter should never behave like a text-only assistant when the current host
-provides better tools.
+Hunter should never behave like a text-only assistant when its host provides
+better capabilities. It discovers and combines the useful tools available for
+the current outcome. If the host supports applications, messages, profile
+updates, uploads, scheduling, or other actions, Hunter can carry the requested
+workflow through those actions using the host's normal interaction model.
 
-It discovers and uses relevant browser, search, file, email, calendar,
-document, repository, connected-source, and local execution capabilities. It
-can combine several tools and sources for one workflow. When a capability is
-missing or fails, Hunter chooses the strongest remaining path and provides a
-complete handoff instead of abandoning the task.
+There is no separate Hunter capability gate and no roadmap dependency on
+Hunter-specific adapters. Missing or blocked capabilities cause a useful
+fallback or handoff, not a different product architecture.
 
-The career workflow is platform-neutral. Host-specific packaging and adapters
-stay thin.
+## Simple, free, and portable
 
-## Simple on Day 1
+The baseline requires no Hunter server, database, subscription, account, API
+key, or package installation. A user adds the skill to a compatible agentic
+host and starts speaking naturally. Existing files, connected context, a
+portable state file, or conversation can all be valid starting points.
 
-The baseline experience must not require a Hunter server, database,
-subscription, or API key.
+The workflow is provider-neutral. The same skill directory can be loaded by
+Agent Skills-compatible platforms without rewriting Hunter's career logic.
 
-A user installs Hunter, supplies an existing state file or any useful career
-material, and starts speaking naturally. Hunter asks only for information
-that materially unblocks the current outcome. If no documents exist, Hunter
-can build a profile through conversation.
+## Optional portable continuity
 
-The first reference experience is ChatGPT Work: one portable Agent Skill in a
-thin skills-only plugin. The same skill directory is reusable by compatible
-agentic platforms.
+When continuity across chats or platforms matters, Hunter can maintain one
+inspectable, user-controlled `hunter-state.yaml` containing profiles,
+opportunities, pursuits, relationships, activities, tasks, artifacts, and
+workspace preferences.
 
-## Portable working memory
-
-Hunter's baseline source of continuity is a single inspectable,
-user-controlled `hunter-state.yaml` file. It contains profiles,
-opportunities, pursuits, relationships, activities, tasks, and workspace
-preferences.
-
-The file can live in a ChatGPT Project, be downloaded and reattached, or move
-to another compatible platform. Hunter-specific hosted storage is not
-required.
-
-## Start guided, expand through adapters
-
-Hunter Guided v0.1 focuses on onboarding, research, analysis, document and
-message creation, relationship planning, pipeline management, interview
-preparation, and next-best-action guidance.
-
-Later phases can add external applications, messages, profile maintenance,
-scheduling, and proactive operations through the capabilities supplied by the
-host and its connectors. Those phases extend the same profiles, workflows,
-and portable state rather than replacing the skill-first core.
+The file can live in a project, connected storage, a repository, or be
+downloaded and reattached elsewhere. It enhances continuity but is never a
+prerequisite for a useful first result.
 
 ## Open by design
 
-Hunter's skill, schemas, templates, tests, and reference packaging are free
-and open under Apache-2.0. Anyone can inspect, extend, implement, or adapt
-them. Future hosted conveniences may exist, but baseline operation and state
-portability will not depend on them.
+Hunter's skill, schema, templates, and reference packaging are free and open
+under Apache-2.0. Anyone can inspect, extend, package, or adapt them. Future
+conveniences must not make the baseline dependent on a Hunter-hosted runtime or
+storage service.
 
 ## What success looks like
 
-Hunter succeeds when:
+Hunter succeeds when users discover stronger opportunities, communicate the
+positioning they intend, build valuable relationships, convert more pursuits,
+make better career decisions, and spend far less time coordinating the work.
 
-- users reach relevant opportunities they would otherwise have missed;
-- their chosen profiles and materials communicate the intended positioning;
-- recruiters, firms, clients, and useful connections respond;
-- interviews, proposals, and applications convert more effectively;
-- opportunities improve in fit, scope, and economic value;
-- career operations consume far less user time;
-- relationships and market knowledge compound over time; and
-- Hunter can move between supported platforms without losing continuity.
-
-The agent works for the user. The user controls the profiles, the state, and
-the direction.
+The user controls the profiles, context, state, and direction. The host
+controls its capabilities. Hunter makes them operate as one career system.
 
 That is Hunter.

@@ -1,57 +1,59 @@
 # Hunter
 
-Hunter is a free, open-source, platform-neutral career agent. It uses the
-context and tools already available on an agentic platform to help users
-manage profiles, opportunities, recruiters, relationships, applications,
-interviews, offers, and contract work.
+Hunter is a free, open-source, provider-powered career operating skill. It
+turns the intelligence, context, and tools already available in an agentic
+host into one coherent workflow for finding and pursuing work.
 
-> **Project status:** Hunter Guided v0.1 has an approved conversational design.
-> The written specification is awaiting final review; implementation has not
-> started.
+Hunter does not ship its own browser, portal automation, email client,
+calendar, database, server, model, or API. The host supplies capabilities and
+controls their authentication and permissions; Hunter supplies the career
+workflow, multi-profile model, continuity, and judgment needed to use them
+together.
 
-## Start here
+## What Hunter can manage
 
-- [Vision](VISION.md)
-- [Hunter Guided v0.1 Design](docs/superpowers/specs/2026-07-21-hunter-guided-v0.1-design.md)
-- [Adversarial Review of the Initial Architecture](docs/reviews/2026-07-21-hunter-adversarial-design-review.md)
+- any number of independent career profiles;
+- jobs, contracts, consulting work, recruiters, firms, referrals, and leads;
+- resumes, profiles, proposals, application answers, and outreach;
+- opportunity research, applications, portal/profile updates, and follow-ups;
+- relationships, interviews, scheduling, offers, and negotiations; and
+- portable continuity through an optional user-owned `hunter-state.yaml`.
 
-## Guided v0.1
+Hunter scales with its host. On a capable platform it can complete an
+end-to-end workflow using browser, files, documents, email, calendar, connected
+apps, forms, and other available tools. On a limited platform it completes the
+possible work and returns a ready-to-use handoff for the missing step.
 
-The first product slice is a reusable Agent Skill packaged in a thin
-skills-only ChatGPT plugin. It will:
+## Install and use
 
-- onboard from documents, existing state, or conversation;
-- maintain any number of independent career profiles;
-- use every relevant capability available in the current host;
-- discover jobs, contracts, recruiters, firms, referrals, and connections;
-- create resumes, application materials, proposals, and outreach;
-- manage opportunities, pursuits, relationships, interviews, and follow-ups;
-- preserve portable state in one user-owned `hunter-state.yaml` file; and
-- remain useful when rich tools or persistent writes are unavailable.
+Hunter is a skills-only plugin with no Hunter account, subscription, API key,
+server, or dependency installation.
 
-Guided v0.1 researches, analyzes, creates artifacts, and tracks work. External
-applications, messages, and profile updates are a later execution phase.
+1. Add this repository as a plugin marketplace and install `hunter` in a
+   compatible host, or load/copy `plugins/hunter/skills/hunter` in any host that
+   supports Agent Skills.
+2. Start a conversation naturally, for example:
+   - “Set me up from my career files and find my best next opportunities.”
+   - “Use my consulting profile to find contracts and handle the applications.”
+   - “Manage these two profiles separately and tell me what to do next.”
+3. Hunter uses the tools and context available in that host. Attach or create
+   `hunter-state.yaml` only when portable continuity is useful.
 
-## Core commitments
+## Design commitments
 
 - useful from the first session;
-- free Hunter baseline with no Hunter server, subscription, or API key;
-- natural-language operation rather than command memorization;
-- isolated profiles with no forced identity or profile classification;
-- maximum use of relevant host tools and context;
-- portable, inspectable, user-owned state;
-- platform-neutral career logic and thin distribution adapters;
-- generic public code and fixtures with no user-specific career data.
+- generic across professions, countries, seniority, and engagement models;
+- multiple isolated profiles without a forced shared identity;
+- maximum use of relevant host capabilities and connected context;
+- natural-language operation with no Hunter command syntax;
+- optional, inspectable, user-owned portable state; and
+- platform-neutral workflow with no Hunter-specific execution runtime.
 
-ChatGPT Work is the first reference experience. The underlying skill remains
-portable to other Agent Skills-compatible hosts and can later be paired with
-MCP or native connectors without rewriting Hunter's career workflows.
-
-## Repository hygiene
+The complete product is the skill package under `plugins/hunter`. See
+[VISION.md](VISION.md) for the product vision.
 
 Do not commit real resumes, credentials, application records, private contact
-data, or personal Hunter state. Public examples and test fixtures must remain
-generic and non-user-specific.
+data, or personal Hunter state to this public repository.
 
 ## License
 

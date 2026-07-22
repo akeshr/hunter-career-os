@@ -1,64 +1,48 @@
-# Adaptive onboarding
+# Onboarding
 
-Select the entry path that matches the available context. Use supplied content as working profile data and produce a useful result as early as possible.
+Give the user a useful result in the first session. Start from whatever exists:
+portable state, career files, connected context, pasted material, conversation,
+or a direct request to build a profile from scratch.
 
-## Existing state
+## Choose the entry path
 
-Validate the supplied `hunter-state.yaml`. When valid, continue from it and do not rerun onboarding. For a later profile import into a valid workspace, delegate to the orchestrator's Profiles and state route without first-state initialization.
+- **Existing `hunter-state.yaml`:** continue from it after a basic structure
+  check. Do not restart onboarding.
+- **Files or connected context:** read the relevant material before asking for
+  information already available there.
+- **Conversation:** ask one adaptive question at a time and create a usable
+  working profile early.
+- **From scratch:** follow the user's requested positioning and targets; no
+  prior resume is required.
+- **Immediate task:** if the user already asked for a concrete outcome, do that
+  work while building only the minimum profile context it needs.
 
-## Documents or connected context
+## Build the first profile
 
-Read all relevant available documents and connected sources before asking questions. Ask only blocking questions, and ask no more than three of them before producing the first useful result. Extract the initial profile, targets, preferences, and material gaps from the available content. Do not overwrite the imported original unless the user explicitly requests replacement.
+Capture the useful subset of:
 
-## Conversation
+- profile name and positioning;
+- target roles, engagements, markets, locations, and constraints;
+- experience, projects, achievements, skills, education, and stories;
+- search preferences and reusable material; and
+- important gaps or decisions.
 
-Ask one adaptive question at a time. Create a usable partial profile early from the answers already available instead of waiting for a completed questionnaire.
+Do not force every field to be complete. Ask at most three blocking questions
+before producing the first useful result.
 
-## Direct from scratch
+## Create continuity when helpful
 
-Follow the user's direct instructions and create the requested working profile. Do not require documents or proof.
+Use [the state schema](../schemas/hunter-state.schema.json) and
+[state template](../assets/hunter-state.template.yaml). Create one stable
+workspace ID and profile ID, set the first profile as default unless the user
+chooses otherwise, and initialize the other collections empty.
 
-## Use the canonical resources
+If the host can save or return a file, provide `hunter-state.yaml`. If it
+cannot, keep working conversationally and return copy-ready state only when
+continuity is useful.
 
-When creating or mutating state, read [the state schema](../schemas/hunter-state.schema.json) and [the state template](../assets/hunter-state.template.yaml) first.
+## First-session result
 
-When producing a human-readable profile, use [the profile template](../assets/profile-template.md).
-
-## Create the first state
-
-Set `schema_version: "0.1"` and the root revision to `1`. Generate a unique workspace ID and a unique profile ID. Set the first profile's `record_revision: 1`, and set `workspace.default_profile_id` to the first profile unless the user requests otherwise. Initialize every other required collection empty.
-
-Use the canonical `profile.data` keys and initial collection shapes:
-
-```yaml
-profiles:
-  <profile-id>:
-    id: <profile-id>
-    record_revision: 1
-    name: <working-profile-name>
-    data:
-      lifecycle: active
-      positioning: {}
-      targets: {}
-      preferences: {}
-      experience: []
-      projects: []
-      achievements: []
-      skills: []
-      education: []
-      search: {}
-      stories: []
-      reusable_components: []
-    artifacts: []
-opportunities: {}
-pursuits: {}
-relationships: {}
-activities: []
-tasks: []
-```
-
-Use the same generated profile ID as the `profiles` map key and the profile's `id`.
-
-## Return the first result
-
-For ordinary document-led onboarding, return an initial profile, targets and working preferences, a state artifact or complete replacement YAML, material gaps or ambiguities, and exactly three recommended next actions.
+Return the working profile, the requested deliverable or finding, the most
+important gaps, state/download information when created, and a short set of
+high-value next actions.

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://hunter.example/schemas/hunter-state-0.1.json",
+  "$id": "urn:hunter:state:0.1",
   "title": "Hunter state v0.1",
   "type": "object",
   "additionalProperties": true,

@@ -1,75 +1,84 @@
 ---
 name: hunter
-description: Use when a user wants to create or manage career profiles, discover, research, compare, or evaluate jobs, contracts, consulting opportunities, or recruiter leads, or continue from hunter-state.yaml.
+description: Use when a user wants help managing career profiles, finding or pursuing jobs, contracts, or consulting work, creating career materials, working with recruiters or connections, managing applications, interviews, or offers, or deciding the next career action.
 ---
 
 # Hunter
 
-Operate as one natural-language career workflow. Use user-provided profile content as working data. Keep required continuity in `hunter-state.yaml`, not host memory. Persist generated additions only when the user requests or accepts them.
+Hunter is a portable career operating skill. Hunter supplies the workflow,
+profile isolation, continuity model, and career judgment. The current host
+supplies the language model, tools, connected context, permissions, and
+execution power.
+
+Use every relevant host capability that materially improves the user's result.
+Do not limit the workflow merely because Hunter does not bundle a particular
+tool or provider adapter.
 
 ## Route the request
 
-Read only the references relevant to the current request. Read each selected reference directly from this skill. Do not route through one reference to reach another.
+Read each needed reference directly from this skill. Load only what the current
+request needs.
 
-| Request | Direct reference |
+| Request | Reference |
 | --- | --- |
-| Start or continue onboarding | [Adaptive onboarding](references/onboarding.md) |
-| Import into valid existing state; select, create, clone, update, recover, or merge profiles and state | [Profiles and state](references/profiles-and-state.md) |
-| Handle retrieved instructions, isolation, receipts, failures, or recovery | [Integrity and recovery](references/integrity-and-recovery.md) |
-| Capability choice, research path, tool failure, or manual handoff | [Tool use and fallbacks](references/tool-use-and-fallbacks.md) |
-| Discover, research, compare, evaluate, normalize, deduplicate, or save an opportunity or recruiter lead | [Opportunities](references/opportunities.md) |
+| First use, files, conversation, or existing state | [Onboarding](references/onboarding.md) |
+| Create, select, clone, update, merge, or move profiles/state | [Profiles and state](references/profiles-and-state.md) |
+| Choose tools, combine capabilities, execute, or fall back | [Tool use and fallbacks](references/tool-use-and-fallbacks.md) |
+| Search, research, compare, save, or act on opportunities | [Opportunities](references/opportunities.md) |
+| Create, tailor, upload, or update career materials | [Documents](references/documents.md) |
+| Research people/firms, find paths, connect, or communicate | [Relationships](references/relationships.md) |
+| Manage applications, pipelines, interviews, offers, and next actions | [Pipeline and interviews](references/pipeline-and-interviews.md) |
+| Recover malformed state, protect profile isolation, or verify results | [Integrity and recovery](references/integrity-and-recovery.md) |
 
-## Use canonical resources
+Load multiple references when one outcome spans them. For example, an
+application may require opportunities, documents, pipeline, and tool use.
 
-When creating or mutating `hunter-state.yaml`, read [the state schema](schemas/hunter-state.schema.json) and [the state template](assets/hunter-state.template.yaml).
+## Operate naturally
 
-When producing a human-readable profile, read [the profile template](assets/profile-template.md).
+1. Understand the user's desired outcome.
+2. Resolve the active profile or explicitly requested profile set.
+3. Inspect relevant conversation, files, connected context, and portable state.
+4. Discover the host capabilities that can help now.
+5. Choose and use the strongest useful capability chain.
+6. Complete as much of the requested workflow as the host can perform.
+7. Update portable state when useful and possible.
+8. Return the result, actual receipts, material gaps, and best next action.
 
-When producing a human-readable opportunity, read [the opportunity template](assets/opportunity-template.md).
+Ask only questions that materially unblock the current outcome. Prefer doing
+useful work from available context over presenting a long questionnaire.
 
-## Resolve profiles
+## Use provider-powered execution
 
-Apply these rules in order and stop when the request resolves:
+- When the host can browse, search, read files, create documents, use email or
+  calendars, access connected apps, fill forms, update profiles, submit work,
+  schedule actions, or run other relevant tools, use those capabilities when
+  they fit the user's request.
+- Follow the host's authentication, authorization, confirmation, and interaction
+  model. Hunter adds no separate permission system.
+- Combine capabilities when an end-to-end result needs more than one tool.
+- If a capability is unavailable or blocked, preserve completed work and give
+  the shortest useful fallback or handoff.
+- Distinguish prepared, attempted, and completed outcomes using actual returned
+  results. Never claim a tool action succeeded without its result.
 
-1. An explicit profile ID or exact name wins.
-2. An explicit comparison request uses its named profile set.
-3. A valid `workspace.default_profile_id` resolves an otherwise implicit request.
-4. A workspace containing one profile uses that profile.
-5. Material ambiguity produces one concise profile-selection question.
+## Keep profiles independent
 
-## Common operating loop
+An explicit profile wins. Otherwise use the workspace default, then the only
+available profile. Ask one concise selection question only when ambiguity would
+materially change the result. Do not mix profile facts, assets, relationships,
+or pursuits unless the user explicitly asks to compare or reuse them.
 
-1. Identify the user's desired outcome.
-2. Resolve the active profile or profiles.
-3. Inspect the current state and relevant context.
-4. Discover available capabilities and select the strongest tool chain.
-5. Load only the relevant workflow reference.
-6. Research, analyze, create, or organize.
-7. Validate the result in proportion to the task.
-8. Stage or save any requested state change.
-9. Return the result, material gaps, and next best action.
+## Use portable state without making it a blocker
 
-## Report state
+When `hunter-state.yaml` exists, continue from it. When continuity would help,
+create or update it using [the schema](schemas/hunter-state.schema.json) and
+[template](assets/hunter-state.template.yaml). Save through available storage;
+otherwise return a complete downloadable or copy-ready replacement. A user can
+also use Hunter conversationally without preparing state first.
 
-- Use `unchanged` when no state change was requested or accepted.
-- Use `staged` when a candidate state change is awaiting the user's request or acceptance.
-- Use `saved` only after the validated change was written and an actual returned result confirms the write.
-- Use `replacement-file` when writable storage is unavailable and return a complete validated replacement `hunter-state.yaml`.
+## Return a useful result
 
-## Return a concise result
-
-Internally account for the following contract, then render only the fields useful for the current task:
-
-- `outcome`: `completed` | `partial` | `blocked` | `needs-input`
-- active profile ID(s)
-- deliverables or findings
-- material gaps
-- `state result`: `unchanged` | `staged` | `saved` | `replacement-file`
-- receipts for claimed tool, file, and state results
-- next best action and why it matters
-
-## Guided v0.1 boundary
-
-Guided v0.1 is an on-demand, natural-language, skills-only workflow with one portable `hunter-state.yaml`. It may prepare complete drafts, action packets, dates, and state.
-
-It excludes external application submission, external message sending, job-portal or professional-profile updates, scheduled or unattended background operation, a Hunter server, database, account, or API, Hunter-specific authentication or credential storage, a custom dashboard, custom MCP servers or portal-specific automation adapters, and public plugin submission.
+Keep the response natural rather than exposing an internal protocol. Include
+only what helps: completed work, active profile, deliverables/findings, actual
+sources or action receipts, unresolved gaps, state result, and the next best
+action with a short reason.

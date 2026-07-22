@@ -1,7 +1,7 @@
 {
   "name": "hunter-career-os",
   "interface": {
-    "displayName": "Hunter Career Os"
+    "displayName": "Hunter Career OS"
   },
   "plugins": [
     {
