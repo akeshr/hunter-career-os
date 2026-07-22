@@ -117,7 +117,7 @@ empty artifacts, no shared profile facts, and empty
 opportunity/pursuit/relationship/activity/task collections.
 
 ~~~bash
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   tests/hunter/fixtures/workflows/opportunities/state-before.yaml
 ~~~
 
@@ -453,7 +453,7 @@ node --test tests/hunter/core-scenarios.test.mjs \
   tests/hunter/capability-harness.test.mjs \
   tests/hunter/package.test.mjs \
   tests/hunter/opportunities.test.mjs
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml
 python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py \
   plugins/hunter/skills/hunter

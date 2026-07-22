@@ -71,7 +71,7 @@ source together.
 The state fixture separately passed:
 
 ```text
-npm run validate:state -- tests/hunter/fixtures/workflows/opportunities/state-before.yaml
+node tests/hunter/support/validate-state-cli.mjs tests/hunter/fixtures/workflows/opportunities/state-before.yaml
 ```
 
 The command exited 0 with `kind: "valid"`.
@@ -859,7 +859,7 @@ packages. No repository manifest or lockfile changed.
 | `env npm_config_cache=/tmp/hunter-task5-npm-cache npm ci` | exit 0; seven packages installed |
 | `npm run test:state` | 116/116 pass, zero failures |
 | `node --test tests/hunter/core-scenarios.test.mjs tests/hunter/capability-harness.test.mjs tests/hunter/package.test.mjs tests/hunter/opportunities.test.mjs` | 293/293 pass, zero failures |
-| `npm run validate:state -- plugins/hunter/skills/hunter/assets/hunter-state.template.yaml` | exit 0; `kind: valid` |
+| `node tests/hunter/support/validate-state-cli.mjs plugins/hunter/skills/hunter/assets/hunter-state.template.yaml` | exit 0; `kind: valid` |
 | `python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py plugins/hunter/skills/hunter` | exit 0; `Skill is valid!` |
 | `python3 /root/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/hunter` | exit 0; plugin validation passed |
 | `git diff --check` | exit 0 after exact-output whitespace normalization |
@@ -1117,7 +1117,7 @@ are not stored in the run artifacts.
 | `env npm_config_cache=/tmp/hunter-task5-npm-cache npm ci` | exit 0; seven packages installed |
 | `npm run test:state` | 116/116 pass, zero failures |
 | `node --test tests/hunter/core-scenarios.test.mjs tests/hunter/capability-harness.test.mjs tests/hunter/package.test.mjs tests/hunter/opportunities.test.mjs` | 321/321 pass, zero failures |
-| `npm run validate:state -- plugins/hunter/skills/hunter/assets/hunter-state.template.yaml` | exit 0; `kind: valid` |
+| `node tests/hunter/support/validate-state-cli.mjs plugins/hunter/skills/hunter/assets/hunter-state.template.yaml` | exit 0; `kind: valid` |
 | `python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py plugins/hunter/skills/hunter` | exit 0; `Skill is valid!` |
 | `python3 /root/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/hunter` | exit 0; plugin validation passed |
 | `git diff --check` | exit 0 |
@@ -1288,7 +1288,7 @@ Plan 4 work is authorized.
 | `env npm_config_cache=/tmp/hunter-task5-npm-cache npm ci` | exit 0; seven packages installed |
 | `npm run test:state` | 116/116 pass, zero failures |
 | `node --test tests/hunter/core-scenarios.test.mjs tests/hunter/capability-harness.test.mjs tests/hunter/package.test.mjs tests/hunter/opportunities.test.mjs` | 324/324 pass, zero failures |
-| `npm run validate:state -- plugins/hunter/skills/hunter/assets/hunter-state.template.yaml` | exit 0; `kind: valid` |
+| `node tests/hunter/support/validate-state-cli.mjs plugins/hunter/skills/hunter/assets/hunter-state.template.yaml` | exit 0; `kind: valid` |
 | `python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py plugins/hunter/skills/hunter` | exit 0; `Skill is valid!` |
 | `python3 /root/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/hunter` | exit 0; plugin validation passed |
 | `git diff --check` | exit 0 |

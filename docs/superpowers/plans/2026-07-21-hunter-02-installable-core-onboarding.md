@@ -555,7 +555,7 @@ Apply the smallest general instruction change, rerun the failed case, then rerun
 npm ci
 npm run test:state
 node --test tests/hunter/core-scenarios.test.mjs tests/hunter/package.test.mjs
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml
 python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py \
   plugins/hunter/skills/hunter

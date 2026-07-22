@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
+// Repository test support; not part of the distributed Hunter plugin.
 import { lstat, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-import { repairStateYaml } from "../../tools/hunter-state/repair.mjs";
+import { repairStateYaml } from "./state/repair.mjs";
 
 const usage =
-  "node tests/hunter/validate-state.mjs <state.yaml> [--repair-output <new.yaml>]";
+  "node tests/hunter/support/validate-state-cli.mjs <state.yaml> [--repair-output <new.yaml>]";
 
 const diagnostic = (kind, code, path, message) => ({
   kind,

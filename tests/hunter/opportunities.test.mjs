@@ -3,9 +3,9 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { parse as parseYaml } from "yaml";
 
-import { parseStateYaml } from "../../tools/hunter-state/io.mjs";
-import { validateStateTransition } from "../../tools/hunter-state/transition.mjs";
-import { validateStateObject } from "../../tools/hunter-state/validate.mjs";
+import { parseStateYaml } from "./support/state/io.mjs";
+import { validateStateTransition } from "./support/state/transition.mjs";
+import { validateStateObject } from "./support/state/validate.mjs";
 import {
   loadScenario,
   validateScenarioShape,

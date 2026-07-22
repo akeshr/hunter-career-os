@@ -29,12 +29,12 @@
 | `package.json` / `package-lock.json` | Reproducible development tests |
 | `plugins/hunter/skills/hunter/schemas/hunter-state.schema.json` | Complete v0.1 structural contract |
 | `plugins/hunter/skills/hunter/assets/hunter-state.template.yaml` | Empty portable state |
-| `tools/hunter-state/io.mjs` | Strict parsing and canonical serialization |
-| `tools/hunter-state/validate.mjs` | Schema and semantic validation |
-| `tools/hunter-state/transition.mjs` | Saved-mutation revision validation |
-| `tools/hunter-state/merge.mjs` | Three-way merge and conflict reporting |
-| `tools/hunter-state/repair.mjs` | Conservative structural repair |
-| `tests/hunter/validate-state.mjs` | CLI validator |
+| `tests/hunter/support/state/io.mjs` | Strict parsing and canonical serialization |
+| `tests/hunter/support/state/validate.mjs` | Schema and semantic validation |
+| `tests/hunter/support/state/transition.mjs` | Saved-mutation revision validation |
+| `tests/hunter/support/state/merge.mjs` | Three-way merge and conflict reporting |
+| `tests/hunter/support/state/repair.mjs` | Conservative structural repair |
+| `tests/hunter/support/validate-state-cli.mjs` | CLI validator |
 | `tests/hunter/state/*.test.mjs` | State unit tests |
 | `tests/hunter/fixtures/state/**` | Generic fixtures |
 
@@ -72,8 +72,8 @@ repairStateYaml(text)
 - Create: `.gitignore`
 - Create: `plugins/hunter/skills/hunter/schemas/hunter-state.schema.json`
 - Create: `plugins/hunter/skills/hunter/assets/hunter-state.template.yaml`
-- Create: `tools/hunter-state/io.mjs`
-- Create: `tools/hunter-state/validate.mjs`
+- Create: `tests/hunter/support/state/io.mjs`
+- Create: `tests/hunter/support/state/validate.mjs`
 - Create: `tests/hunter/state/schema.test.mjs`
 - Create: `tests/hunter/fixtures/state/valid/empty.yaml`
 - Create: `tests/hunter/fixtures/state/valid/two-profiles.yaml`
@@ -95,9 +95,9 @@ const fixture = (name) =>
   readFile(new URL("../fixtures/state/" + name, import.meta.url), "utf8");
 
 test("empty state validates", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const { validateStateObject } =
-    await import("../../../tools/hunter-state/validate.mjs");
+    await import("../support/state/validate.mjs");
   const parsed = parseStateYaml(await fixture("valid/empty.yaml"), "empty");
   assert.equal(parsed.ok, true);
   assert.deepEqual(validateStateObject(parsed.state), {
@@ -109,7 +109,7 @@ test("empty state validates", async () => {
 
 test("unknown semantic fields survive a round trip", async () => {
   const { parseStateYaml, serializeState } =
-    await import("../../../tools/hunter-state/io.mjs");
+    await import("../support/state/io.mjs");
   const parsed = parseStateYaml(
     await fixture("valid/two-profiles.yaml"),
     "two-profiles",
@@ -120,7 +120,7 @@ test("unknown semantic fields survive a round trip", async () => {
 });
 
 test("duplicate keys, aliases, tags, and non-finite numbers are rejected", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const cases = [
     "revision: 1\\nrevision: 2\\n",
     "a: &a {x: 1}\\nb: *a\\n",
@@ -154,8 +154,7 @@ Create `package.json`:
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test tests/hunter/state/*.test.mjs tests/hunter/*.test.mjs",
-    "test:state": "node --test tests/hunter/state/*.test.mjs",
-    "validate:state": "node tests/hunter/validate-state.mjs"
+    "test:state": "node --test tests/hunter/state/*.test.mjs"
   },
   "devDependencies": {
     "ajv": "^8.0.0",
@@ -238,7 +237,7 @@ Commit:
 git add .gitignore package.json package-lock.json \
   plugins/hunter/skills/hunter/schemas/hunter-state.schema.json \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml \
-  tools/hunter-state/io.mjs tools/hunter-state/validate.mjs \
+  tests/hunter/support/state/io.mjs tests/hunter/support/state/validate.mjs \
   tests/hunter/state/schema.test.mjs tests/hunter/fixtures/state/valid
 git commit -m "feat: define portable Hunter state"
 ```
@@ -246,7 +245,7 @@ git commit -m "feat: define portable Hunter state"
 ### Task 2: Validate semantic IDs and references
 
 **Files:**
-- Modify: `tools/hunter-state/validate.mjs`
+- Modify: `tests/hunter/support/state/validate.mjs`
 - Create: `tests/hunter/state/semantics.test.mjs`
 - Create: `tests/hunter/fixtures/state/invalid/key-id-mismatch.yaml`
 - Create: `tests/hunter/fixtures/state/invalid/dangling-pursuit.yaml`
@@ -292,7 +291,7 @@ Run `npm run test:state`. Expected: all schema and semantic tests PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add tools/hunter-state/validate.mjs tests/hunter/state/semantics.test.mjs \
+git add tests/hunter/support/state/validate.mjs tests/hunter/state/semantics.test.mjs \
   tests/hunter/fixtures/state/invalid
 git commit -m "feat: validate Hunter state references"
 ```
@@ -300,7 +299,7 @@ git commit -m "feat: validate Hunter state references"
 ### Task 3: Validate saved transitions and revisions
 
 **Files:**
-- Create: `tools/hunter-state/transition.mjs`
+- Create: `tests/hunter/support/state/transition.mjs`
 - Create: `tests/hunter/state/transition.test.mjs`
 - Create: `tests/hunter/fixtures/state/transition/before.yaml`
 - Create: `tests/hunter/fixtures/state/transition/valid-after.yaml`
@@ -339,7 +338,7 @@ errors together with transition errors.
 Run `npm run test:state`. Expected: zero failures.
 
 ```bash
-git add tools/hunter-state/transition.mjs tests/hunter/state/transition.test.mjs \
+git add tests/hunter/support/state/transition.mjs tests/hunter/state/transition.test.mjs \
   tests/hunter/fixtures/state/transition
 git commit -m "feat: validate Hunter state transitions"
 ```
@@ -347,7 +346,7 @@ git commit -m "feat: validate Hunter state transitions"
 ### Task 4: Implement safe three-way merge
 
 **Files:**
-- Create: `tools/hunter-state/merge.mjs`
+- Create: `tests/hunter/support/state/merge.mjs`
 - Create: `tests/hunter/state/merge.test.mjs`
 - Create: `tests/hunter/fixtures/state/merge/base.yaml`
 - Create: `tests/hunter/fixtures/state/merge/left.yaml`
@@ -398,7 +397,7 @@ right.record_revision) + 1`.
 Run `npm run test:state`. Expected: zero failures.
 
 ```bash
-git add tools/hunter-state/merge.mjs tests/hunter/state/merge.test.mjs \
+git add tests/hunter/support/state/merge.mjs tests/hunter/state/merge.test.mjs \
   tests/hunter/fixtures/state/merge
 git commit -m "feat: merge Hunter state copies"
 ```
@@ -406,10 +405,10 @@ git commit -m "feat: merge Hunter state copies"
 ### Task 5: Add conservative repair and validator CLI
 
 **Files:**
-- Create: `tools/hunter-state/repair.mjs`
+- Create: `tests/hunter/support/state/repair.mjs`
 - Create: `tests/hunter/state/repair.test.mjs`
 - Create: `tests/hunter/state/cli.test.mjs`
-- Create: `tests/hunter/validate-state.mjs`
+- Create: `tests/hunter/support/validate-state-cli.mjs`
 - Create: `tests/hunter/fixtures/state/repair/missing-collections.yaml`
 - Create: `tests/hunter/fixtures/state/repair/missing-record-metadata.yaml`
 - Create: `tests/hunter/fixtures/state/repair/unrepairable.yaml`
@@ -448,7 +447,7 @@ Expected: FAIL because `repair.mjs` and the validator CLI do not exist.
 CLI:
 
 ```text
-node tests/hunter/validate-state.mjs <state.yaml> [--repair-output <new.yaml>]
+node tests/hunter/support/validate-state-cli.mjs <state.yaml> [--repair-output <new.yaml>]
 ```
 
 Print one JSON object to stdout. `--repair-output` writes only a new path and
@@ -459,7 +458,7 @@ only for `kind: "repaired"`. Never replace the input.
 Run:
 
 ```bash
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml
 npm run test:state
 ```
@@ -467,7 +466,7 @@ npm run test:state
 Expected: validator exits 0; all tests PASS.
 
 ```bash
-git add tools/hunter-state/repair.mjs tests/hunter/validate-state.mjs \
+git add tests/hunter/support/state/repair.mjs tests/hunter/support/validate-state-cli.mjs \
   tests/hunter/state/repair.test.mjs tests/hunter/state/cli.test.mjs \
   tests/hunter/fixtures/state/repair
 git commit -m "feat: repair and inspect Hunter state"
@@ -511,7 +510,7 @@ every committed fixture category and its owning test.
 ```bash
 npm ci
 npm run test:state
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml
 ```
 

@@ -1,3 +1,4 @@
+// Repository test support; not part of the distributed Hunter plugin.
 import { isDeepStrictEqual } from "node:util";
 import { validateStateObject } from "./validate.mjs";
 import { pointer } from "./pointer.mjs";

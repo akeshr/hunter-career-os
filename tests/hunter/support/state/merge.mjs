@@ -1,3 +1,4 @@
+// Repository test support; not part of the distributed Hunter plugin.
 import { validateStateObject } from "./validate.mjs";
 import { appendPointer, pointer, pointerSegments } from "./pointer.mjs";
 

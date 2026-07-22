@@ -85,7 +85,7 @@ Only actual observed checks are recorded. `rendered: passed` requires inspection
 Create `profile-alpha` as a generic transformation-program profile and `profile-beta` as a distinct clinical-product profile. Add `opportunity-alpha` for a transformation lead and link only Alpha. Both profiles have empty artifacts; all other root collections are valid.
 
 ~~~bash
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   tests/hunter/fixtures/workflows/documents/state-before.yaml
 ~~~
 
@@ -352,7 +352,7 @@ npm ci
 npm run test:state
 node --test tests/hunter/document-assets.test.mjs
 npm test
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml
 python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py \
   plugins/hunter/skills/hunter

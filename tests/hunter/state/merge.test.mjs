@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { parseStateYaml, serializeState } from "../../../tools/hunter-state/io.mjs";
-import { mergeStateCopies } from "../../../tools/hunter-state/merge.mjs";
-import { validateStateObject } from "../../../tools/hunter-state/validate.mjs";
+import { parseStateYaml, serializeState } from "../support/state/io.mjs";
+import { mergeStateCopies } from "../support/state/merge.mjs";
+import { validateStateObject } from "../support/state/validate.mjs";
 
 const fixture = async (name) => {
   const parsed = parseStateYaml(

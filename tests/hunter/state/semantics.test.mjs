@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const loadInvalid = async (name) => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const text = await readFile(
     new URL("../fixtures/state/invalid/" + name, import.meta.url),
     "utf8",
@@ -14,7 +14,7 @@ const loadInvalid = async (name) => {
 };
 
 const loadValid = async (name) => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const text = await readFile(
     new URL("../fixtures/state/valid/" + name, import.meta.url),
     "utf8",
@@ -114,7 +114,7 @@ const validState = () => ({
 
 const validateState = async (state) => {
   const { validateStateObject } =
-    await import("../../../tools/hunter-state/validate.mjs");
+    await import("../support/state/validate.mjs");
   return validateStateObject(state);
 };
 
@@ -150,7 +150,7 @@ for (const [file, code, paths] of [
 ]) {
   test(file + " reports " + code, async () => {
     const { validateStateObject } =
-      await import("../../../tools/hunter-state/validate.mjs");
+      await import("../support/state/validate.mjs");
     const result = validateStateObject(await loadInvalid(file));
     assert.equal(result.valid, false);
     assert.deepEqual(

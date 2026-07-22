@@ -6,8 +6,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test tests/hunter/state/*.test.mjs tests/hunter/*.test.mjs",
-    "test:state": "node --test tests/hunter/state/*.test.mjs",
-    "validate:state": "node tests/hunter/validate-state.mjs"
+    "test:state": "node --test tests/hunter/state/*.test.mjs"
   },
   "devDependencies": {
     "ajv": "^8.0.0",

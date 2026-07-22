@@ -2,9 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-import { repairStateYaml } from "../../../tools/hunter-state/repair.mjs";
-import { parseStateYaml } from "../../../tools/hunter-state/io.mjs";
-import { validateStateObject } from "../../../tools/hunter-state/validate.mjs";
+import { repairStateYaml } from "../support/state/repair.mjs";
+import { parseStateYaml } from "../support/state/io.mjs";
+import { validateStateObject } from "../support/state/validate.mjs";
 
 const fixture = (name) =>
   readFile(new URL("../fixtures/state/" + name, import.meta.url), "utf8");

@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { parseStateYaml } from "../../../tools/hunter-state/io.mjs";
-import { validateStateTransition } from "../../../tools/hunter-state/transition.mjs";
+import { parseStateYaml } from "../support/state/io.mjs";
+import { validateStateTransition } from "../support/state/transition.mjs";
 
 const fixture = async (name) => {
   const parsed = parseStateYaml(

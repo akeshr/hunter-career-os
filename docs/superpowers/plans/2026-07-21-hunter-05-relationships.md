@@ -96,7 +96,7 @@ Activities/tasks use Plan 1’s optional `profile_id`, `relationship_id`, `oppor
 Use two distinct generic profiles, `opportunity-alpha` linked only to Alpha, and empty relationships/activities/tasks. Include no real names, companies, contact details, or private data.
 
 ~~~bash
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   tests/hunter/fixtures/workflows/relationships/state-before.yaml
 ~~~
 
@@ -371,7 +371,7 @@ npm run test:state
 node --test tests/hunter/document-assets.test.mjs \
   tests/hunter/relationships.test.mjs
 npm test
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml
 python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py \
   plugins/hunter/skills/hunter

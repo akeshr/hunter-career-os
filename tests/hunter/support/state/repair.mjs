@@ -1,3 +1,4 @@
+// Repository test support; not part of the distributed Hunter plugin.
 import { parseStateYaml, serializeState } from "./io.mjs";
 import { validateStateObject } from "./validate.mjs";
 import { appendPointer, pointer } from "./pointer.mjs";

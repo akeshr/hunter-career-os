@@ -6,9 +6,9 @@ const fixture = (name) =>
   readFile(new URL("../fixtures/state/" + name, import.meta.url), "utf8");
 
 test("empty state validates", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const { validateStateObject } =
-    await import("../../../tools/hunter-state/validate.mjs");
+    await import("../support/state/validate.mjs");
   const parsed = parseStateYaml(await fixture("valid/empty.yaml"), "empty");
   assert.equal(parsed.ok, true);
   assert.deepEqual(validateStateObject(parsed.state), {
@@ -20,7 +20,7 @@ test("empty state validates", async () => {
 
 test("unknown semantic fields survive a round trip", async () => {
   const { parseStateYaml, serializeState } =
-    await import("../../../tools/hunter-state/io.mjs");
+    await import("../support/state/io.mjs");
   const parsed = parseStateYaml(
     await fixture("valid/two-profiles.yaml"),
     "two-profiles",
@@ -31,7 +31,7 @@ test("unknown semantic fields survive a round trip", async () => {
 });
 
 test("duplicate keys, aliases, tags, and non-finite numbers are rejected", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const cases = [
     "revision: 1\nrevision: 2\n",
     "a: &a {x: 1}\nb: *a\n",
@@ -42,7 +42,7 @@ test("duplicate keys, aliases, tags, and non-finite numbers are rejected", async
 });
 
 test("numeric mapping keys cannot collapse into quoted string keys", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const parsed = parseStateYaml('1: numeric\n"1": string\n', "numeric-key");
 
   assert.equal(parsed.ok, false);
@@ -55,7 +55,7 @@ test("numeric mapping keys cannot collapse into quoted string keys", async () =>
 });
 
 test("collection mapping keys cannot collapse into their string spelling", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const parsed = parseStateYaml(
     '? [alpha, beta]\n: collection\n"alpha,beta": string\n',
     "collection-key",
@@ -71,7 +71,7 @@ test("collection mapping keys cannot collapse into their string spelling", async
 });
 
 test("quoted and unquoted string keys preserve own __proto__ properties", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
 
   for (const key of ["__proto__", '"__proto__"']) {
     const parsed = parseStateYaml(`${key}: own\nordinary: value\n`, "string-key");
@@ -83,7 +83,7 @@ test("quoted and unquoted string keys preserve own __proto__ properties", async 
 });
 
 test("parsed unknown fields reject unsafe integers with a stable pointer", async () => {
-  const { parseStateYaml } = await import("../../../tools/hunter-state/io.mjs");
+  const { parseStateYaml } = await import("../support/state/io.mjs");
   const parsed = parseStateYaml(
     "extensions:\n  future:\n    count: 9007199254740993\n",
     "unsafe-integer",

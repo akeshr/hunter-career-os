@@ -1,3 +1,4 @@
+// Repository test support; not part of the distributed Hunter plugin.
 export const escapePointerSegment = (segment) =>
   String(segment).replaceAll("~", "~0").replaceAll("/", "~1");
 

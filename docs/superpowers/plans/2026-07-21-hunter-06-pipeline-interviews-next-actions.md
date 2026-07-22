@@ -31,8 +31,8 @@
 | `plugins/hunter/skills/hunter/references/pipeline-and-interviews.md` | Pursuits, pipeline, interviews, offers, tasks, and next actions |
 | `plugins/hunter/skills/hunter/assets/pipeline-template.md` | Portable pipeline view |
 | `plugins/hunter/skills/hunter/SKILL.md` | One direct route |
-| `tools/hunter-state/pursuit-view.mjs` | Repository-only deterministic derived-stage helper |
-| `tools/hunter-state/next-actions.mjs` | Repository-only deterministic action ordering |
+| `tests/hunter/support/state/pursuit-view.mjs` | Repository-only deterministic derived-stage helper |
+| `tests/hunter/support/state/next-actions.mjs` | Repository-only deterministic action ordering |
 | `tests/hunter/fixtures/workflows/pipeline/state-before.yaml` | Generic nonlinear pipeline |
 | `tests/hunter/scenarios/06-*.yaml` | Eight pressure scenarios |
 | `tests/hunter/pipeline-scenarios.test.mjs` | Plan 2 scenario-contract checks |
@@ -164,7 +164,7 @@ research tasks. All timestamps are fixed RFC 3339 values and all records
 validate.
 
 ~~~bash
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   tests/hunter/fixtures/workflows/pipeline/state-before.yaml
 ~~~
 
@@ -269,8 +269,8 @@ git commit -m "test: define Hunter pipeline pressure scenarios"
 ### Task 2: Implement deterministic pursuit views and action ordering
 
 **Files:**
-- Create: `tools/hunter-state/pursuit-view.mjs`
-- Create: `tools/hunter-state/next-actions.mjs`
+- Create: `tests/hunter/support/state/pursuit-view.mjs`
+- Create: `tests/hunter/support/state/next-actions.mjs`
 - Create: `tests/hunter/pipeline.test.mjs`
 
 - [ ] **Step 1: Write failing derivation tests**
@@ -396,8 +396,8 @@ the scheduled/overdue category without `action_kind`.
 
 ~~~bash
 node --test tests/hunter/pipeline.test.mjs
-git add tools/hunter-state/pursuit-view.mjs \
-  tools/hunter-state/next-actions.mjs \
+git add tests/hunter/support/state/pursuit-view.mjs \
+  tests/hunter/support/state/next-actions.mjs \
   tests/hunter/pipeline.test.mjs
 git commit -m "feat: derive Hunter pursuit views"
 ~~~
@@ -516,7 +516,7 @@ npm ci
 npm run test:state
 node --test tests/hunter/pipeline.test.mjs
 npm test
-npm run validate:state -- \
+node tests/hunter/support/validate-state-cli.mjs \
   plugins/hunter/skills/hunter/assets/hunter-state.template.yaml
 python3 /root/.codex/skills/oai/skill-creator/scripts/quick_validate.py \
   plugins/hunter/skills/hunter

@@ -14,7 +14,9 @@ import { promisify } from "node:util";
 
 const run = promisify(execFile);
 const root = fileURLToPath(new URL("../../..", import.meta.url));
-const cli = fileURLToPath(new URL("../validate-state.mjs", import.meta.url));
+const cli = fileURLToPath(
+  new URL("../support/validate-state-cli.mjs", import.meta.url),
+);
 const template = join(
   root,
   "plugins/hunter/skills/hunter/assets/hunter-state.template.yaml",

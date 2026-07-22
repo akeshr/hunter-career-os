@@ -1,3 +1,4 @@
+// Repository test support; not part of the distributed Hunter plugin.
 import { readFileSync } from "node:fs";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
@@ -6,7 +7,7 @@ import { appendPointer, pointer } from "./pointer.mjs";
 const schema = JSON.parse(
   readFileSync(
     new URL(
-      "../../plugins/hunter/skills/hunter/schemas/hunter-state.schema.json",
+      "../../../../plugins/hunter/skills/hunter/schemas/hunter-state.schema.json",
       import.meta.url,
     ),
     "utf8",

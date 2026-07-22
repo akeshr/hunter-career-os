@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import test from "node:test";
 import { parse as parseYaml } from "yaml";
 
@@ -21,9 +21,80 @@ const marketplaceUrl = new URL(
   "../../.agents/plugins/marketplace.json",
   import.meta.url,
 );
+const packageJsonUrl = new URL("../../package.json", import.meta.url);
+const readmeUrl = new URL("../../README.md", import.meta.url);
 
 async function readJson(url) {
   return JSON.parse(await readFile(url, "utf8"));
+}
+
+const allowedPluginFilePatterns = [
+  /^\.codex-plugin\/plugin\.json$/,
+  /^skills\/hunter\/SKILL\.md$/,
+  /^skills\/hunter\/agents\/[^/]+\.ya?ml$/,
+  /^skills\/hunter\/assets\/[^/]+\.(?:md|ya?ml)$/,
+  /^skills\/hunter\/references\/[^/]+\.md$/,
+  /^skills\/hunter\/schemas\/[^/]+\.json$/,
+];
+
+const testSupportReference =
+  /(?:^|[\\/])(?:tools[\\/]hunter-state|tests[\\/]hunter[\\/]support(?:[\\/]state|[\\/]validate-state-cli\.mjs))/i;
+
+function skillsOnlyBoundaryViolations({
+  pluginFiles,
+  skillNames,
+  scripts,
+  readme,
+}) {
+  const violations = [];
+
+  if (skillNames.length !== 1 || skillNames[0] !== "hunter") {
+    violations.push("the plugin must distribute exactly one hunter skill");
+  }
+
+  for (const path of pluginFiles) {
+    if (!allowedPluginFilePatterns.some((pattern) => pattern.test(path))) {
+      violations.push(`plugin file is outside the skills-only allowlist: ${path}`);
+    }
+  }
+
+  for (const [name, command] of Object.entries(scripts ?? {})) {
+    if (
+      name === "validate:state" ||
+      testSupportReference.test(command) ||
+      /validate-state-cli\.mjs/i.test(command)
+    ) {
+      violations.push(`package script exposes test-only state support: ${name}`);
+    }
+  }
+
+  if (
+    /validate:state/i.test(readme) ||
+    /validate-state-cli\.mjs/i.test(readme) ||
+    testSupportReference.test(readme)
+  ) {
+    violations.push("README exposes test-only state support");
+  }
+
+  return violations;
+}
+
+async function listRelativeFiles(root, prefix = "") {
+  const paths = [];
+  for (const entry of await readdir(root, { withFileTypes: true })) {
+    const relativePath = `${prefix}${entry.name}`;
+    if (entry.isDirectory()) {
+      paths.push(
+        ...await listRelativeFiles(
+          new URL(`${entry.name}/`, root),
+          `${relativePath}/`,
+        ),
+      );
+    } else {
+      paths.push(relativePath);
+    }
+  }
+  return paths.sort();
 }
 
 function extractSections(markdown) {
@@ -1762,6 +1833,107 @@ test("plugin package declares no apps, MCP servers, or hooks", async () => {
     "hooks",
   ]) {
     await assert.rejects(stat(new URL(path, pluginRoot)), { code: "ENOENT" });
+  }
+});
+
+test("state helpers are test-only and absent from the product surface", async () => {
+  await assert.rejects(stat(new URL("../../tools/", import.meta.url)), {
+    code: "ENOENT",
+  });
+
+  for (const path of [
+    "support/state/io.mjs",
+    "support/state/merge.mjs",
+    "support/state/pointer.mjs",
+    "support/state/repair.mjs",
+    "support/state/transition.mjs",
+    "support/state/validate.mjs",
+    "support/validate-state-cli.mjs",
+  ]) {
+    assert.equal(
+      (await stat(new URL(path, import.meta.url))).isFile(),
+      true,
+      `${path} must remain test infrastructure`,
+    );
+  }
+
+  const packageJson = await readJson(packageJsonUrl);
+  assert.equal(
+    Object.hasOwn(packageJson.scripts, "validate:state"),
+    false,
+    "state validation must not be exposed as a product command",
+  );
+
+  const readme = await readFile(readmeUrl, "utf8");
+  assert.doesNotMatch(readme, /(?:## State validation|validate:state)/i);
+
+  const pluginFiles = await listRelativeFiles(pluginRoot);
+  const skillNames = (await readdir(new URL("skills/", pluginRoot), {
+    withFileTypes: true,
+  }))
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+  assert.deepEqual(
+    skillsOnlyBoundaryViolations({
+      pluginFiles,
+      skillNames,
+      scripts: packageJson.scripts,
+      readme,
+    }),
+    [],
+  );
+});
+
+test("skills-only boundary rejects renamed CLI and runtime-package leaks", () => {
+  const baseline = {
+    pluginFiles: [
+      ".codex-plugin/plugin.json",
+      "skills/hunter/SKILL.md",
+      "skills/hunter/references/onboarding.md",
+    ],
+    skillNames: ["hunter"],
+    scripts: { test: "node --test tests/hunter/*.test.mjs" },
+    readme: "Install Hunter from the local marketplace.",
+  };
+
+  assert.deepEqual(skillsOnlyBoundaryViolations(baseline), []);
+
+  for (const [label, mutation] of [
+    [
+      "second skill",
+      { skillNames: ["hunter", "hidden-agent"] },
+    ],
+    [
+      "runtime directory",
+      { pluginFiles: [...baseline.pluginFiles, "skills/hunter/runtime/validator.json"] },
+    ],
+    [
+      "executable helper",
+      { pluginFiles: [...baseline.pluginFiles, "skills/hunter/assets/validate.mjs"] },
+    ],
+    [
+      "renamed package script",
+      {
+        scripts: {
+          test: baseline.scripts.test,
+          inspect: "node tests/hunter/support/validate-state-cli.mjs state.yaml",
+        },
+      },
+    ],
+    [
+      "direct README command",
+      {
+        readme:
+          "Run node tests/hunter/support/validate-state-cli.mjs state.yaml.",
+      },
+    ],
+  ]) {
+    assert.notDeepEqual(
+      skillsOnlyBoundaryViolations({ ...baseline, ...mutation }),
+      [],
+      `${label} must violate the strict skills-only boundary`,
+    );
   }
 });
 

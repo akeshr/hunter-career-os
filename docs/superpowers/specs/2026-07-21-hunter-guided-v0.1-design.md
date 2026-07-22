@@ -133,7 +133,15 @@ plugins/hunter/
 tests/hunter/
 ├── fixtures/
 ├── scenarios/
-└── validate-state.mjs
+└── support/
+    ├── state/
+    │   ├── io.mjs
+    │   ├── merge.mjs
+    │   ├── pointer.mjs
+    │   ├── repair.mjs
+    │   ├── transition.mjs
+    │   └── validate.mjs
+    └── validate-state-cli.mjs
 ```
 
 `SKILL.md` is a thin orchestrator. It owns activation, intent routing, the
@@ -141,11 +149,12 @@ common workflow contract, profile selection, relevant-reference loading, and
 result shape. Detailed procedures remain one level deep in `references/` so
 the host loads only the module needed for the current task.
 
-The development validator parses YAML and validates it against the state
-schema. It uses Node.js and repo-scoped development dependencies, but it is
-test infrastructure rather than an installed-skill dependency. At runtime
-Hunter uses the host's available file and execution capabilities and performs
-structural checks directly when no compatible validator is available.
+The test-support validator parses YAML and validates it against the state
+schema. It uses Node.js and repo-scoped development dependencies, is not
+exposed as a product command, and is excluded from the installed plugin. The
+installed skill has no dependency on this validator. At runtime Hunter uses
+the host's available capabilities and the bundled schema to validate the
+complete candidate state and changed references before a requested write.
 
 ### 3.2 One skill, modular workflows
 

@@ -188,7 +188,7 @@ Add without removing earlier scripts:
   "test:qualification": "node --test tests/hunter/package-validator.test.mjs tests/hunter/scenario-validator.test.mjs",
   "validate:package": "node tests/hunter/validate-package.mjs",
   "validate:scenarios": "node tests/hunter/validate-scenarios.mjs",
-  "qualify:deterministic": "npm test && npm run validate:state -- plugins/hunter/skills/hunter/assets/hunter-state.template.yaml && npm run validate:package && npm run validate:scenarios"
+  "qualify:deterministic": "npm test && node tests/hunter/support/validate-state-cli.mjs plugins/hunter/skills/hunter/assets/hunter-state.template.yaml && npm run validate:package && npm run validate:scenarios"
 }
 ~~~
 
@@ -532,7 +532,7 @@ Use one new chat per case. Run full cases in a genuinely capable host and reduce
 Use only generic candidate data. Inspect generated editable files and actual renders. Validate the final and continued state:
 
 ~~~bash
-npm run validate:state -- /absolute/path/to/final/hunter-state.yaml
+node tests/hunter/support/validate-state-cli.mjs /absolute/path/to/final/hunter-state.yaml
 ~~~
 
 Expected: exit 0. Confirm the pursuit references the selected profile/opportunity, artifacts have correct ownership/availability, unknown fields persist, and the next chat continues without relying on memory.

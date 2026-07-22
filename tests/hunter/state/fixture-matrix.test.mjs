@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { makeStateFixture } from "../helpers/make-state-fixture.mjs";
-import { validateStateObject } from "../../../tools/hunter-state/validate.mjs";
+import { validateStateObject } from "../support/state/validate.mjs";
 
 const countRecords = (state) => ({
   profiles: Object.keys(state.profiles).length,
