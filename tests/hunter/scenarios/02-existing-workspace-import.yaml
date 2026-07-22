@@ -1,0 +1,34 @@
+id: 02-existing-workspace-import
+title: Import one independent profile into an existing workspace
+workflow: profiles-and-state
+capability_profile: full
+capabilities:
+  available:
+    - files.read
+    - state.read
+    - state.write
+  unavailable: []
+  failures: []
+fixtures:
+  - ../fixtures/state/valid/two-profiles.yaml
+  - ../fixtures/career/profile-source.md
+capability_bindings:
+  files.read:
+    - ../fixtures/career/profile-source.md
+  state.read:
+    - ../fixtures/state/valid/two-profiles.yaml
+prompt: |
+  Import the supplied generic career material into the supplied valid Hunter workspace as one new independent profile named "Program Operations Profile". Save the result without changing either existing profile or the current default profile.
+expected:
+  must:
+    - Validate and continue from the existing workspace, then extract the supplied career source into exactly one new independent profile.
+    - Give the imported profile a new stable ID, record_revision 1, data.lifecycle active, canonical profile data populated from the source, and an empty artifacts array.
+    - Increment the root revision exactly once, validate the complete candidate and transition, and report an actual state.write result.
+    - Preserve both existing profiles, the default profile, unknown extensions, and every other existing record unchanged.
+  must_not:
+    - Reset or reinitialize the workspace as a first state, rerun onboarding, or return the root to revision 1.
+    - Modify either existing profile, workspace.default_profile_id, extensions, or any other existing record.
+    - Reuse an existing profile ID or profile data object, create inheritance or synchronization, or copy data across profiles without an explicit request.
+  state:
+    - Root revision changes from 1 to 2 and exactly one new stable profile is added at record_revision 1 with data.lifecycle active and artifacts empty.
+    - profile-alpha, profile-beta, workspace.default_profile_id, extensions.future_flag, and all non-profile collections are preserved, and the resulting state and transition validate.

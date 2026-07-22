@@ -1,0 +1,34 @@
+{
+  "name": "hunter",
+  "version": "0.1.0",
+  "description": "Portable guided career workflows for profiles, opportunities, application assets, relationships, and pursuits.",
+  "author": {
+    "name": "Hunter Career OS Contributors"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "career",
+    "jobs",
+    "contracts",
+    "resumes",
+    "recruiting"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Hunter",
+    "shortDescription": "Guided career discovery and pursuit workflows",
+    "longDescription": "Use available tools to build isolated profiles, discover and analyze opportunities, create targeted assets, and maintain portable pursuit state.",
+    "developerName": "Hunter Career OS Contributors",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Set me up from my career files.",
+      "Find and evaluate opportunities for this profile.",
+      "What should I do next?"
+    ]
+  }
+}

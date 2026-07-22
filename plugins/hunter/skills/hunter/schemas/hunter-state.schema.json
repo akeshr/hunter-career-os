@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hunter.example/schemas/hunter-state-0.1.json",
+  "title": "Hunter state v0.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "revision",
+    "workspace",
+    "profiles",
+    "opportunities",
+    "pursuits",
+    "relationships",
+    "activities",
+    "tasks"
+  ],
+  "properties": {
+    "schema_version": { "const": "0.1" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "workspace": { "$ref": "#/$defs/workspace" },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/profile" }
+    },
+    "opportunities": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/opportunity" }
+    },
+    "pursuits": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/pursuit" }
+    },
+    "relationships": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/relationship" }
+    },
+    "activities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/activity" }
+    },
+    "tasks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/task" }
+    }
+  },
+  "$defs": {
+    "nonEmptyId": { "type": "string", "minLength": 1 },
+    "recordRevision": { "type": "integer", "minimum": 1 },
+    "workspace": {
+      "type": "object",
+      "required": ["id", "default_profile_id", "preferences"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^workspace-" },
+        "default_profile_id": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^profile-" }
+          ]
+        },
+        "preferences": { "type": "object" }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "required": ["id", "record_revision", "name", "data", "artifacts"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^profile-" },
+        "record_revision": { "$ref": "#/$defs/recordRevision" },
+        "name": { "type": "string", "minLength": 1 },
+        "data": { "type": "object" },
+        "artifacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/artifact" }
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_revision",
+        "profile_id",
+        "type",
+        "created_at",
+        "availability"
+      ],
+      "anyOf": [{ "required": ["filename"] }, { "required": ["location"] }],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyId" },
+        "record_revision": { "$ref": "#/$defs/recordRevision" },
+        "profile_id": { "type": "string", "pattern": "^profile-" },
+        "pursuit_id": { "type": "string", "pattern": "^pursuit-" },
+        "type": { "type": "string", "minLength": 1 },
+        "filename": { "type": "string", "minLength": 1 },
+        "location": { "type": "string", "minLength": 1 },
+        "created_at": { "type": "string", "format": "date-time" },
+        "availability": { "type": "string", "minLength": 1 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyId" }
+      }
+    },
+    "opportunity": {
+      "type": "object",
+      "required": ["id", "record_revision", "kind", "profile_ids", "sources"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^opportunity-" },
+        "record_revision": { "$ref": "#/$defs/recordRevision" },
+        "kind": { "type": "string", "minLength": 1 },
+        "profile_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^profile-" }
+        },
+        "sources": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/source" }
+        }
+      }
+    },
+    "pursuit": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_revision",
+        "profile_id",
+        "opportunity_id",
+        "event_ids"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^pursuit-" },
+        "record_revision": { "$ref": "#/$defs/recordRevision" },
+        "profile_id": { "type": "string", "pattern": "^profile-" },
+        "opportunity_id": { "type": "string", "pattern": "^opportunity-" },
+        "event_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyId" }
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "required": ["id", "record_revision", "kind", "name", "profile_ids"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^relationship-" },
+        "record_revision": { "$ref": "#/$defs/recordRevision" },
+        "kind": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "profile_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^profile-" }
+        }
+      }
+    },
+    "activity": {
+      "type": "object",
+      "required": ["id", "record_revision", "type", "occurred_at"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^activity-" },
+        "record_revision": { "$ref": "#/$defs/recordRevision" },
+        "type": { "type": "string", "minLength": 1 },
+        "occurred_at": { "type": "string", "format": "date-time" },
+        "profile_id": { "type": "string", "pattern": "^profile-" },
+        "opportunity_id": { "type": "string", "pattern": "^opportunity-" },
+        "pursuit_id": { "type": "string", "pattern": "^pursuit-" },
+        "relationship_id": { "type": "string", "pattern": "^relationship-" },
+        "details": { "type": "object" }
+      }
+    },
+    "task": {
+      "type": "object",
+      "required": ["id", "record_revision", "title", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^task-" },
+        "record_revision": { "$ref": "#/$defs/recordRevision" },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "profile_id": { "type": "string", "pattern": "^profile-" },
+        "opportunity_id": { "type": "string", "pattern": "^opportunity-" },
+        "pursuit_id": { "type": "string", "pattern": "^pursuit-" },
+        "relationship_id": { "type": "string", "pattern": "^relationship-" },
+        "activity_id": { "type": "string", "pattern": "^activity-" },
+        "details": { "type": "object" },
+        "due_at": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "format": "date-time" }
+          ]
+        }
+      }
+    }
+  }
+}

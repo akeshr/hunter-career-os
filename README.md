@@ -53,6 +53,11 @@ Do not commit real resumes, credentials, application records, private contact
 data, or personal Hunter state. Public examples and test fixtures must remain
 generic and non-user-specific.
 
+## State validation
+
+`npm run test:state` is the frozen Hunter state gate. Validate a state file
+directly with `npm run validate:state -- path/to/hunter-state.yaml`.
+
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).

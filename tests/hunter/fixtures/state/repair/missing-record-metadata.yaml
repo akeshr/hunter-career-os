@@ -1,0 +1,36 @@
+schema_version: "0.1"
+revision: 1
+workspace:
+  id: workspace-repair
+  default_profile_id: profile-alpha
+  preferences: {}
+profiles:
+  profile-alpha:
+    name: Alpha
+    data: null
+    artifacts:
+      - id: artifact-alpha
+        profile_id: profile-alpha
+        type: resume
+        filename: alpha.txt
+        created_at: 2026-07-21T00:00:00Z
+        availability: local
+    future_profile_field:
+      retained: true
+opportunities:
+  opportunity-alpha:
+    kind: role
+    profile_ids: null
+    sources: null
+pursuits: {}
+relationships: {}
+activities:
+  - id: activity-alpha
+    type: note
+    occurred_at: 2026-07-21T00:00:00Z
+    details: null
+tasks:
+  - id: task-alpha
+    title: Follow up
+    status: open
+    details: null

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hunter"
+  short_description: "Career profiles, opportunities, and pursuits"
+  default_prompt: "Use $hunter to set me up from my career files."

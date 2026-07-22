@@ -1,0 +1,24 @@
+id: 02-conversation-onboarding
+title: Start a usable profile through conversation
+workflow: onboarding
+capability_profile: reduced
+capabilities:
+  available:
+    - state.write
+  unavailable:
+    - files.read
+    - connected.sources
+  failures: []
+prompt: |
+  I do not have a resume or other files. Help me get started with a career profile through conversation and save it so I can continue later.
+expected:
+  must:
+    - Ask one adaptive question at a time.
+    - Produce a usable partial profile and portable state without requiring documents or connected sources.
+    - Surface material gaps and a relevant next action once enough context exists for a first useful result.
+  must_not:
+    - Present a long fixed questionnaire or ask several unrelated questions at once.
+    - Require a resume, another file, connected-source access, or external proof.
+  state:
+    - The first saved state has schema_version "0.1", root revision 1, a stable profile ID, and profile record_revision 1.
+    - All required root collections exist and the new profile is the workspace default unless the user asks otherwise.

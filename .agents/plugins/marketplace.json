@@ -1,0 +1,20 @@
+{
+  "name": "hunter-career-os",
+  "interface": {
+    "displayName": "Hunter Career Os"
+  },
+  "plugins": [
+    {
+      "name": "hunter",
+      "source": {
+        "source": "local",
+        "path": "./plugins/hunter"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

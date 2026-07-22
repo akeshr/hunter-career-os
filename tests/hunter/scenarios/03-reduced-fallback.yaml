@@ -1,0 +1,38 @@
+id: 03-reduced-fallback
+title: Use supplied material when live discovery is unavailable
+workflow: opportunities
+capability_profile: reduced
+capabilities:
+  available:
+    - files.read
+    - state.read
+    - state.write
+  unavailable:
+    - browser.search
+    - browser.navigate
+    - connected.sources.read
+  failures: []
+fixtures:
+  - ../fixtures/workflows/opportunities/state-before.yaml
+  - ../fixtures/workflows/opportunities/listing-primary.md
+capability_bindings:
+  files.read:
+    - ../fixtures/workflows/opportunities/state-before.yaml
+    - ../fixtures/workflows/opportunities/listing-primary.md
+  state.read:
+    - ../fixtures/workflows/opportunities/state-before.yaml
+prompt: |
+  Review the supplied opportunity for the Hunter profiles and tell me how to continue a broader search while live browser and connected-source coverage are unavailable. Do not save anything.
+expected:
+  must:
+    - Use the supplied listing and return its source receipt instead of stopping because live discovery is unavailable.
+    - Return a complete search plan covering the relevant live-source categories.
+    - Name the exact coverage gap that current browser and connected-source results could not be checked.
+  must_not:
+    - Claim that unavailable browser, navigation, or connected-source capabilities were used.
+    - Present the supplied listing as proof of complete or current live-market coverage.
+    - Save or mutate state when the prompt requests analysis only.
+  state:
+    - Any staged record uses valid stable IDs and references that resolve to profile-alpha or profile-beta.
+    - profile-alpha and profile-beta remain unchanged by value, including their record revisions and isolated profile data.
+    - No candidate state is written; root revision remains 1 and every downstream collection remains empty.
