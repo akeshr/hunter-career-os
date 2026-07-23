@@ -3,7 +3,10 @@ revision: 1
 workspace:
   id: workspace-example
   default_profile_id: null
-  preferences: {}
+  preferences:
+    execution_channels:
+      activation: not_offered
+      channels: {}
 profiles: {}
 opportunities: {}
 pursuits: {}
